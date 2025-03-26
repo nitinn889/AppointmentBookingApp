@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - Doctorly</title>
+    <style>
+        /* Import Google Fonts */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background: #0a0d14;
+            color: #d0d0d0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        /* HOME CONTAINER */
+        .home-container {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 40px;
+            border-radius: 12px;
+            text-align: center;
+            width: 400px;
+            box-shadow: 0px 6px 20px rgba(255, 255, 255, 0.05);
+        }
+
+        .home-container h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #b8c2cc;
+            margin-bottom: 20px;
+        }
+
+        /* BUTTON STYLING */
+        .btn {
+            width: 100%;
+            background: #1e40af;
+            color: #ffffff;
+            border: none;
+            padding: 12px;
+            font-size: 1rem;
+            cursor: pointer;
+            border-radius: 8px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .btn:hover {
+            background: #1e3a8a;
+            transform: translateY(-2px);
+        }
+
+        /* EXIT BUTTON */
+        .btn-exit {
+            background: #dc2626;
+        }
+
+        .btn-exit:hover {
+            background: #b91c1c;
+        }
+
+        /* NAVIGATION LINKS */
+        .nav-option {
+            margin-top: 15px;
+            font-size: 0.9rem;
+        }
+
+        .nav-option a {
+            color: #94a3b8;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .nav-option a:hover {
+            color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HOME CONTAINER -->
+    <div class="home-container">
+        <h2>Welcome, User!</h2>
+        
+        <!-- Appointment Booking Button -->
+        <button class="btn" onclick="navigateTo('BookAppointment.html')">📅 Book New Appointment</button>
+
+        <!-- Review Appointments Button -->
+        <button class="btn" onclick="navigateTo('reviewAppointments.html')">📄 Review Existing Appointments</button>
+
+        <!-- Exit Button (Redirect to Login) -->
+        <button class="btn btn-exit" onclick="navigateTo('LoginPage.html')">🔙 Exit</button>
+
+        <!-- Navigation Option -->
+        <div class="nav-option">
+            <p>Need help? <a href="help.html">Contact Support</a></p>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT -->
+    <script>
+        // Redirect to different pages
+        function navigateTo(page) {
+            window.location.href = page;
+        }
+    </script>
+
+</body>
+</html>

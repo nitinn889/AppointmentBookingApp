@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            background-color: #0f0f0f;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            width: 40%;
+            margin: 100px auto;
+            background-color: #1e1e1e;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            color: #d0d0d0;
+        }
+        h2 {
+            text-align: center;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 6px;
+            border: 1px solid #444;
+            background: #333;
+            color: #fff;
+        }
+        button {
+            width: 100%;
+            background-color: #1e40af;
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #1a3d9a;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Book Appointment</h2>
+    <form action="BookAppointment.php" method="POST" onsubmit="return showAlert()">
+        <label>Patient ID:</label>
+        <input type="text" name="patientID" required>
+        <label>Full Name:</label>
+        <input type="text" name="name" required>
+        <label>Age:</label>
+        <input type="number" name="age" required>
+        <label>Sex:</label>
+        <select name="sex" required>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+        </select>
+        <label>Address:</label>
+        <input type="text" name="address" required>
+        <button type="submit">Next</button>
+    </form>
+</div>
+
+<script>
+    function showAlert() {
+        alert("Appointment details saved successfully. Redirecting to the next page.");
+        return true;
+    }
+</script>
+</body>
+</html>
