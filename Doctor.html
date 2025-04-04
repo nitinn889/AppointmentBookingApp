@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Medicine Prescription Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 30px;
+            background-color: #f9f9f9;
+        }
+
+        form {
+            background-color: #fff;
+            padding: 25px;
+            border-radius: 10px;
+            max-width: 500px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+
+        input, select, button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .success {
+            color: green;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Prescription Form</h2>
+
+    <form id="prescriptionForm">
+        <label for="medicine">Medicine Name:</label>
+        <input type="text" id="medicine" name="medicine" required>
+
+        <label for="dosage">Dosage (e.g., 500mg):</label>
+        <input type="text" id="dosage" name="dosage" required>
+
+        <label for="time">Time (1-0-1 format):</label>
+        <select id="time" name="time" required>
+            <option value="">--Select--</option>
+            <option value="1-0-1">1-0-1 (Morning & Night)</option>
+            <option value="1-1-1">1-1-1 (Morning, Afternoon & Night)</option>
+            <option value="0-1-0">0-1-0 (Afternoon only)</option>
+            <option value="1-0-0">1-0-0 (Morning only)</option>
+            <option value="0-0-1">0-0-1 (Night only)</option>
+        </select>
+
+        <label for="appointment">Next Appointment Date:</label>
+        <input type="date" id="appointment" name="appointment" required>
+
+        <button type="submit">Submit</button>
+
+        <div class="success" id="message"></div>
+    </form>
+
+    <script>
+        const form = document.getElementById("prescriptionForm");
+        const message = document.getElementById("message");
+
+        form.addEventListener("submit", function (e) {
+            e.preventDefault(); // Prevent form refresh
+
+            // Get values
+            const medicine = document.getElementById("medicine").value;
+            const dosage = document.getElementById("dosage").value;
+            const time = document.getElementById("time").value; // stored as string
+            const appointment = document.getElementById("appointment").value;
+
+            // You would send this data to your backend/database here
+            // For now, we simulate success
+            console.log({
+                medicine,
+                dosage,
+                time,
+                appointment
+            });
+
+            message.textContent = "Prescription submitted successfully!";
+            form.reset(); // Clear form after submission
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Help & Feedback - Doctorly</title>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background: #0a0d14;
+            color: #d0d0d0;
+            text-align: center;
+        }
+
+        /* Navbar */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 50px;
+            background: #0f172a;
+        }
+
+        .navbar .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #f9fafb;
+        }
+
+        .navbar a {
+            text-decoration: none;
+            color: #e5e7eb;
+            font-weight: 500;
+            margin: 0 15px;
+            transition: color 0.3s;
+        }
+
+        .navbar a:hover {
+            color: #3b82f6;
+        }
+
+        /* Form Container */
+        .form-container {
+            background: #111827;
+            padding: 30px;
+            width: 50%;
+            margin: 50px auto;
+            border-radius: 12px;
+            box-shadow: 0px 6px 20px rgba(255, 255, 255, 0.05);
+            text-align: left;
+        }
+
+        h1 {
+            color: #f9fafb;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #d1d5db;
+            display: block;
+            margin-top: 10px;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            background: #1e293b;
+            border: 1px solid #374151;
+            color: white;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        textarea {
+            height: 120px;
+        }
+
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            background: #3b82f6;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            margin-top: 20px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .btn:hover {
+            background: #1e40af;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 20px;
+            background: #0f172a;
+            color: #9ca3af;
+            margin-top: 30px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="logo">DOCTORLY.</div>
+        <div>
+            <a href="index.html">Home</a>
+            <a href="help.html">Help</a>
+            <a href="contact.html">Contact</a>
+        </div>
+    </nav>
+
+    <!-- Feedback Form -->
+    <div class="form-container">
+        <h1>Feedback & Help</h1>
+        <form action="submit_feedback.php" method="POST">
+            <label for="name">Full Name:</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="email">Email Address:</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="phone">Phone Number:</label>
+            <input type="tel" id="phone" name="phone" required>
+
+            <label for="message">Describe Your Problem:</label>
+            <textarea id="message" name="message" required></textarea>
+
+            <button type="submit" class="btn">Submit</button>
+        </form>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        📧 Email: doctorly@gmail.com | 📞 Phone: +91 343 462 21
+    </footer>
+
+</body>
+</html>

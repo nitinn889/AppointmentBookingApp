@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medicine Prescription Form</title>
+    <style>
+                body {
+            background-color: #0f0f0f;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        
+        .container {
+            width: 40%;
+            background-color: #1e1e1e;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            color: #d0d0d0;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        h2 {
+            text-align: center;
+            color: #ffffff;
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            text-align: left;
+            font-size: 1rem;
+            color: #f1f1f1;
+        }
+
+        input[type="text"], select {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            border-radius: 6px;
+            border: 1px solid #444;
+            background: #333;
+            color: #fff;
+            font-size: 1rem;
+            transition: border-color 0.3s ease, background-color 0.3s ease;
+        }
+
+        input[type="text"]:focus, select:focus {
+            border-color: #1e40af;
+            background-color: #222;
+            outline: none;
+        }
+
+        button {
+            width: 100%;
+            background-color: #1e40af;
+            color: white;
+            padding: 14px;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-bottom: 10px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        button:hover {
+            background-color: #1a3d9a;
+            transform: scale(1.05);
+        }
+
+        .home-btn {
+            background-color: #d9534f;
+        }
+
+        .home-btn:hover {
+            background-color: #c9302c;
+            transform: scale(1.05);
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Enter Medicine Details</h2>
+        <form action="addMedicine.php" method="POST">
+            <label for="doctorID">Doctor ID:</label>
+            <input type="text" id="doctorID" name="doctorID" required>
+
+            <label for="patientID">Patient ID:</label>
+            <input type="text" id="patientID" name="patientID" required>
+
+            <label for="medicine">Medicine:</label>
+            <input type="text" id="medicine" name="medicine" required>
+
+            <label for="dosage">Dosage:</label>
+            <input type="text" id="dosage" name="dosage" required>
+
+            <label for="morning">Morning Dose:</label>
+            <select id="morning" name="morning">
+                <option value="0">Not required</option>
+                <option value="1">required</option>
+            </select>
+
+            <label for="afternoon">Afternoon Dose:</label>
+            <select id="afternoon" name="afternoon">
+                <option value="0">Not required</option>
+                <option value="1">required</option>
+            </select>
+
+            <label for="night">Night Dose:</label>
+            <select id="night" name="night">
+                <option value="0">Not required</option>
+                <option value="1">required</option>
+            </select>
+
+            <button type="submit">Add this Medicine</button>
+        </form>
+
+        <button class="home-btn" onclick="window.location.href='DoctorDashboard.html'">Finish patient Consultation</button>
+    </div>
+</body>
+</html>

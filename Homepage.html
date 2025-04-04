@@ -19,10 +19,48 @@
         body {
             background: #0a0d14;
             color: #d0d0d0;
+        }
+
+        /* Header Styling */
+        header {
+            background-color: #0f172a;
+            padding: 15px 30px;
             display: flex;
-            justify-content: center;
+            justify-content: space-between;
             align-items: center;
-            height: 100vh;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+
+        header .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #ffffff;
+        }
+
+        header nav {
+            display: flex;
+            gap: 20px;
+        }
+
+        header nav a {
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 1rem;
+        }
+
+        /* Footer Styling */
+        footer {
+            background-color: #0f172a;
+            text-align: center;
+            padding: 15px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            font-size: 0.9rem;
+            color: #ffffff;
         }
 
         /* HOME CONTAINER */
@@ -33,6 +71,7 @@
             text-align: center;
             width: 400px;
             box-shadow: 0px 6px 20px rgba(255, 255, 255, 0.05);
+            margin: 100px auto 60px auto; /* Adjusted for header and footer */
         }
 
         .home-container h2 {
@@ -86,9 +125,25 @@
         .nav-option a:hover {
             color: #ffffff;
         }
+
+        /* Responsive Design */
+        @media (max-width: 600px) {
+            .home-container {
+                width: 90%;
+            }
+        }
     </style>
 </head>
 <body>
+
+    <!-- Header -->
+    <header>
+        <div class="logo">DOCTORLY</div>
+        <nav>
+            <a href="LoginPage.html">Home</a>
+            <a href="help.html">Contact</a>
+        </nav>
+    </header>
 
     <!-- HOME CONTAINER -->
     <div class="home-container">
@@ -98,7 +153,10 @@
         <button class="btn" onclick="navigateTo('BookAppointment.html')">📅 Book New Appointment</button>
 
         <!-- Review Appointments Button -->
-        <button class="btn" onclick="navigateTo('reviewAppointments.html')">📄 Review Existing Appointments</button>
+        <button class="btn" onclick="navigateTo('FetchPatient.html')">📄 Review Existing Appointments</button>
+
+        <!-- Review Medicines Button -->
+        <button class="btn" onclick="navigateTo('ReviewMedicines.html')">💊 Review Medicines</button>
 
         <!-- Exit Button (Redirect to Login) -->
         <button class="btn btn-exit" onclick="navigateTo('LoginPage.html')">🔙 Exit</button>
@@ -108,6 +166,11 @@
             <p>Need help? <a href="help.html">Contact Support</a></p>
         </div>
     </div>
+
+    <!-- Footer -->
+    <footer>
+        © 2025 Doctorly. All Rights Reserved.
+    </footer>
 
     <!-- JAVASCRIPT -->
     <script>

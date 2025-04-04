@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Prescription</title>
+    <style>
+        /* General Styling */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #0f172a;
+            color: #e5e7eb;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        /* Form Container */
+        .login-container {
+            background-color: #1f2937;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            width: 400px;
+            text-align: center;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #f9fafb;
+        }
+
+        /* Input and Button Styling */
+        .input-container {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        label {
+            font-weight: bold;
+            color: #f9fafb;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #4b5563;
+            border-radius: 8px;
+            background-color: #111827;
+            color: #f9fafb;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 10px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        button[type="submit"] {
+            background-color: #3b82f6;
+            color: #ffffff;
+        }
+
+        #addMedicineButton {
+            background-color: #10b981;
+            color: #ffffff;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+
+        /* Results Container */
+        #result-container {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #111827;
+            border-radius: 12px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #4b5563;
+            text-align: left;
+        }
+
+        th {
+            background-color: #374151;
+            color: #ffffff;
+        }
+
+        /* Error Message Styling */
+        .error-message {
+            margin-top: 10px;
+            color: #ef4444;
+            font-weight: bold;
+        }
+
+        /* Logout Button Styling */
+        .logout-container {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .logout-button {
+            background-color: #ef4444;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 20px;
+            font-size: 1rem;
+            cursor: pointer;
+            display: block;
+            width: 100%;
+        }
+
+        .logout-button:hover {
+            background-color: #dc2626;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="login-container">
+        <h2>Patient Prescription Details</h2>
+
+        <!-- Form to enter Patient ID -->
+        <form id="patientForm">
+            <div class="input-container">
+                <label for="patientID">Enter Patient ID:</label>
+                <input type="text" id="patientID" name="patientID" required>
+            </div>
+
+            <!-- Button to Fetch Patient Details -->
+            <button type="submit">Get Details</button>
+        </form>
+
+        <!-- Button to Add New Medicine (Redirect) -->
+        <button id="addMedicineButton">Add New Medicine</button>
+
+        <!-- Container for displaying results -->
+        <div id="result-container" class="results">
+            <h3>Results for Patient ID:</h3>
+            <table id="resultTable" cellspacing="0" cellpadding="10">
+                <thead>
+                    <tr>
+                        <th>Patient ID</th>
+                        <th>Medicine</th>
+                        <th>Dosage</th>
+                        <th>Time</th>
+                    </tr>
+                </thead>
+                <tbody id="resultBody">
+                    <!-- Data will be dynamically inserted here -->
+                </tbody>
+            </table>
+
+            <!-- Error Message for No Records -->
+            <p id="noRecordMessage" class="error-message" style="display:none;">
+                No records found for the entered Patient ID.
+            </p>
+        </div>
+    </div>
+
+    <!-- Logout Button at Bottom Center -->
+    <div class="logout-container">
+        <button class="logout-button" onclick="logout()">Logout</button>
+    </div>
+
+    <!-- JavaScript for AJAX Submission -->
+    <script>
+        // Handle Patient ID Form Submission
+        document.getElementById("patientForm").addEventListener("submit", function(event) {
+            event.preventDefault(); // Prevent page reload
+
+            const patientID = document.getElementById("patientID").value.trim();
+            const resultBody = document.getElementById("resultBody");
+            const noRecordMessage = document.getElementById("noRecordMessage");
+
+            if (patientID === "") {
+                alert("Please enter a valid Patient ID.");
+                return;
+            }
+
+            // Send AJAX request to Doctor_DetailsFetch.php
+            const formData = new FormData();
+            formData.append("patientID", patientID);
+
+            fetch("Doctor_DetailsFetch.php", {
+                method: "POST",
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                resultBody.innerHTML = ""; // Clear previous results
+
+                if (data.success && data.records.length > 0) {
+                    // Populate table with data using template literals
+                    data.records.forEach(record => {
+                        resultBody.innerHTML += `
+                            <tr>
+                                <td>${record.PatientID}</td>
+                                <td>${record.Medicine}</td>
+                                <td>${record.Dosage}</td>
+                                <td>${record.Time}</td>
+                            </tr>
+                        `;
+                    });
+                    noRecordMessage.style.display = "none";
+                } else {
+                    // Show error message if no records found
+                    noRecordMessage.innerText = `No records found for Patient ID: ${patientID}`;
+                    noRecordMessage.style.display = "block";
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                alert("Error fetching data. Please try again.");
+            });
+        });
+
+        // Redirect to Add Medicine Page
+        document.getElementById("addMedicineButton").addEventListener("click", function() {
+            window.location.href = "addMedicine.html";
+        });
+
+        // Logout Function (Redirect to login page)
+        function logout() {
+            window.location.href = "login.html"; // Change to your actual login page
+        }
+    </script>
+
+</body>
+</html>

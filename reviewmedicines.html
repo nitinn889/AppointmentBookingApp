@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Review Medicines</title>
+    <style>
+        /* Import Google Fonts */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap');
+
+        /* Reset and Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background: #0a0d14;
+            color: #d0d0d0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            height: 100vh;
+            padding: 20px;
+        }
+
+        /* Form Styling */
+        .container {
+            text-align: center;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        /* Input Field */
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            font-size: 1rem;
+            border-radius: 8px;
+            border: 1px solid #94a3b8;
+            background: #1e293b;
+            color: #ffffff;
+            text-align: center;
+        }
+
+        /* Button Styling */
+        .btn {
+            width: 100%;
+            background: #1e40af;
+            color: #ffffff;
+            border: none;
+            padding: 12px;
+            font-size: 1rem;
+            cursor: pointer;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.2s ease-in-out;
+            margin-bottom: 10px;
+        }
+
+        .btn:hover {
+            background: #1e3a8a;
+            transform: translateY(-2px);
+        }
+
+        /* Back Button Styling */
+        .back-btn {
+            background: #dc2626;
+        }
+
+        .back-btn:hover {
+            background: #b91c1c;
+        }
+
+        /* Table Container */
+        .table-container {
+            width: 90%;
+            overflow-x: auto;
+            margin-top: auto;
+            margin-bottom: 20px;
+        }
+
+        /* Table Styling */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #111827;
+            border-radius: 10px;
+            overflow: hidden;
+            max-width: 100%;
+            display: none; /* Initially hidden */
+        }
+
+        th, td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #4b5563;
+            text-align: left;
+            white-space: nowrap;
+        }
+
+        th {
+            background-color: #374151;
+            color: #ffffff;
+        }
+
+        tbody tr:hover {
+            background-color: #374151;
+        }
+
+        tbody tr:last-child {
+            border-bottom: none;
+        }
+
+        /* Error Message */
+        .error-message {
+            color: #ff4d4d;
+            margin-top: 10px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Review Medicines</h2>
+
+        <!-- Patient ID Input -->
+        <input type="text" id="patientID" placeholder="Enter Patient ID">
+
+        <!-- Fetch Button -->
+        <button class="btn" onclick="fetchMedicines()">Get Medicines</button>
+
+        <!-- Back Button -->
+        <button class="btn back-btn" onclick="window.location.href='HomePage.html'">Back</button>
+
+        <!-- Error Message -->
+        <p id="errorMessage" class="error-message">No records found.</p>
+
+        <!-- Medicines Table -->
+        <table id="medicineTable">
+            <thead>
+                <tr>
+                    <th>Doctor Name</th>
+                    <th>Department</th>
+                    <th>Medicine</th>
+                    <th>Dosage</th>
+                    <th>Morning</th>
+                    <th>Afternoon</th>
+                    <th>Night</th>
+                </tr>
+            </thead>
+            <tbody id="medicineBody">
+                <!-- Data will be inserted here -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        function fetchMedicines() {
+            const patientID = document.getElementById("patientID").value;
+            const table = document.getElementById("medicineTable");
+            const medicineBody = document.getElementById("medicineBody");
+            const errorMessage = document.getElementById("errorMessage");
+
+            if (!patientID.trim()) {
+                alert("Please enter a valid Patient ID.");
+                return;
+            }
+
+            fetch("reviewmedicines.php?patientID=" + patientID)
+            .then(response => response.json())
+            .then(data => {
+                if (data.success && data.medicines.length > 0) {
+                    table.style.display = "table";
+                    errorMessage.style.display = "none";
+
+                    // Clear existing rows to prevent duplication
+                    medicineBody.innerHTML = ""; 
+
+                    data.medicines.forEach(med => {
+                        const row = document.createElement("tr");
+                        row.innerHTML = `
+                            <td>${med.DoctorName}</td>
+                            <td>${med.Department}</td>
+                            <td>${med.Medicine}</td>
+                            <td>${med.Dosage}</td>
+                            <td>${med.Morning == 1 ? "Taken" : "Not Taken"}</td>
+                            <td>${med.Afternoon == 1 ? "Taken" : "Not Taken"}</td>
+                            <td>${med.Night == 1 ? "Taken" : "Not Taken"}</td>
+                        `;
+                        medicineBody.appendChild(row);
+                    });
+
+                } else {
+                    table.style.display = "none";
+                    errorMessage.style.display = "block";
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                alert("Error fetching data. Please try again.");
+            });
+        }
+    </script>
+
+</body>
+</html>

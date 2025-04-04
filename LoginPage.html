@@ -4,118 +4,177 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login Page</title>
-
-    <!-- Google Font -->
+    <link rel="stylesheet" href="mainstyles.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-
     <style>
-        /* Global Styles */
-        * {
+        /* General Styling */
+        body {
+            font-family: 'Inter', sans-serif;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
-            font-family: 'Inter', sans-serif;
+            background-color: #111827; /* Dark background */
+            color: #ffffff;
         }
 
-        body {
-            background: #0a0d14;
-            color: #d0d0d0;
+        /* Header Styling */
+        header {
+            background-color: #0f172a; /* Dark navy */
+            padding: 15px 30px;
             display: flex;
-            justify-content: center;
+            justify-content: space-between;
             align-items: center;
-            height: 100vh;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
         }
 
-        /* LOGIN CONTAINER */
-        .login-container {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 40px;
-            border-radius: 12px;
+        header .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #ffffff;
+        }
+
+        header nav {
+            display: flex;
+            gap: 20px;
+        }
+
+        header nav a {
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 1rem;
+        }
+
+        /* Footer Styling */
+        footer {
+            background-color: #0f172a;
             text-align: center;
+            padding: 15px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            font-size: 0.9rem;
+            color: #ffffff;
+        }
+
+        /* Login Container Styling */
+        .login-container {
+            background: #1e293b; /* Dark grey */
+            padding: 40px;
+            border-radius: 8px;
             width: 350px;
-            box-shadow: 0px 6px 20px rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
+            margin: 100px auto 60px auto; /* Adjusted for header and footer */
+            text-align: center;
+            box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.1);
         }
 
-        .login-container h2 {
-            font-size: 2rem;
-            font-weight: 700;
-            color: #b8c2cc;
-            margin-bottom: 20px;
+        h2 {
+            font-size: 1.8rem;
         }
 
-        /* INPUT FIELDS */
         .input-container {
-            text-align: left;
             margin-bottom: 15px;
+            text-align: left;
         }
 
         .input-container label {
-            display: block;
             font-size: 1rem;
-            font-weight: 500;
+            display: block;
             margin-bottom: 5px;
         }
 
         .input-container input {
             width: 100%;
             padding: 10px;
-            border-radius: 6px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            background: rgba(255, 255, 255, 0.08);
-            color: #d0d0d0;
             font-size: 1rem;
-            outline: none;
+            border-radius: 5px;
+            border: 1px solid #ccc;
         }
 
-        .input-container input:focus {
-            border-color: rgba(255, 255, 255, 0.4);
-        }
-
-        /* ERROR MESSAGE */
-        .error-message {
-            color: red;
+        .options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             font-size: 0.9rem;
-            margin-bottom: 15px;
+            margin-top: 10px;
         }
 
-        /* BUTTON */
+        .options a {
+            color: #3b82f6;
+            text-decoration: none;
+        }
+
+        .options a:hover {
+            text-decoration: underline;
+        }
+
         button {
             width: 100%;
-            background: #1e40af;
+            background: #2563eb;
             color: #ffffff;
             border: none;
             padding: 12px;
             font-size: 1rem;
             cursor: pointer;
             border-radius: 8px;
-            transition: all 0.3s ease-in-out;
             font-weight: 600;
+            margin-top: 15px;
+            transition: all 0.2s ease-in-out;
         }
 
         button:hover {
-            background: #1e3a8a;
+            background: #1e40af;
+            transform: translateY(-2px);
         }
 
-        /* SIGNUP OPTION */
-        .signup-option {
-            margin-top: 15px;
+        /* Error Message Styling */
+        .error {
+            color: red;
             font-size: 0.9rem;
+            margin-top: 5px;
         }
 
-        .signup-option a {
-            color: #94a3b8;
-            text-decoration: none;
-            font-weight: 600;
-        }
-
-        .signup-option a:hover {
+        /* Exit Button Styling */
+        .exit-btn {
+            width: 100%;
+            background: #dc2626;
             color: #ffffff;
+            border: none;
+            padding: 12px;
+            font-size: 1rem;
+            cursor: pointer;
+            border-radius: 8px;
+            font-weight: 600;
+            margin-top: 15px;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .exit-btn:hover {
+            background: #b91c1c;
+            transform: translateY(-2px);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 600px) {
+            .login-container {
+                width: 90%;
+            }
         }
     </style>
 </head>
 <body>
 
+    <!-- Header -->
+    <header>
+        <div class="logo">HEALTHIFY.</div>
+        <nav>
+            <a href="LoginPage.html">Home</a>
+            <a href="help.html">Contact</a>
+        </nav>
+    </header>
+
+    <!-- Login Container -->
     <div class="login-container">
         <h2>Login</h2>
         
@@ -127,41 +186,86 @@
             <div class="input-container">
                 <label for="username">Username:</label>
                 <input type="text" id="username" name="username" required>
+                <div class="error" id="usernameError"></div>
             </div>
 
             <div class="input-container">
                 <label for="password">Password:</label>
                 <input type="password" id="password" name="password" required>
+                <div class="error" id="passwordError"></div>
             </div>
 
+            <div class="options">
+                <div class="remember-me">
+                    <input type="checkbox" id="rememberMe" name="rememberMe">
+                    <label for="rememberMe">Remember me</label>
+                </div>
+                <a href="OTP.html" id="forgotPassword">Forgot password?</a>
+            </div>
+            
             <button type="submit">Login</button>
         </form>
 
         <div class="signup-option">
-            <p>Don't have an account? <a href="Signup.html">Sign up</a></p>
+            <p>Don't have an account? <a href="signup.html">Sign up</a></p>
         </div>
+
+        <!-- Exit Button (Redirect to Master Login) -->
+        <button class="exit-btn" onclick="navigateTo('MasterLogin.html')">🔙 Exit</button>
     </div>
 
-    <!-- JavaScript for AJAX Login -->
+    <!-- Footer -->
+    <footer>
+        © 2025 Healthify. All Rights Reserved.
+    </footer>
+
+    <!-- JavaScript for Real-Time Validation & AJAX Login -->
     <script>
+        document.getElementById("loginForm").addEventListener("input", validateLoginForm);
+
+        function validateLoginForm() {
+            let isValid = true;
+
+            // Username validation
+            const username = document.getElementById("username").value.trim();
+            const usernameError = document.getElementById("usernameError");
+            if (username.length < 4) {
+                usernameError.textContent = "Username must be at least 4 characters.";
+                isValid = false;
+            } else {
+                usernameError.textContent = "";
+            }
+
+            // Password validation
+            const password = document.getElementById("password").value;
+            const passwordError = document.getElementById("passwordError");
+            if (password.length < 4) {
+                passwordError.textContent = "Password must be at least 4 characters.";
+                isValid = false;
+            } else {
+                passwordError.textContent = "";
+            }
+
+            return isValid;
+        }
+
         document.getElementById("loginForm").addEventListener("submit", function(event) {
             event.preventDefault();
             
             // Clear previous errors
             document.getElementById("errorMessage").innerText = "";
-            
+
+            if (!validateLoginForm()) {
+                return; // Prevent form submission if validation fails
+            }
+
             const formData = new FormData(this);
 
             fetch("backend/login.php", {
                 method: "POST",
                 body: formData
             })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                return response.json();
-            })
+            .then(response => response.json())
             .then(data => {
                 if (data.success) {
                     window.location.href = "HomePage.html";
@@ -174,6 +278,10 @@
                 document.getElementById("errorMessage").innerText = "Login failed. Please try again.";
             });
         });
+
+        function navigateTo(page) {
+            window.location.href = page;
+        }
     </script>
 
 </body>

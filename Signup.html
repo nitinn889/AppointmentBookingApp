@@ -23,6 +23,27 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
+            flex-direction: column;
+        }
+
+        /* HEADER */
+        .header {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .header h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #ffffff;
         }
 
         /* SIGNUP CONTAINER */
@@ -33,6 +54,7 @@
             text-align: center;
             width: 400px;
             box-shadow: 0px 6px 20px rgba(255, 255, 255, 0.05);
+            margin-top: 80px;
         }
 
         .signup-container h2 {
@@ -56,59 +78,48 @@
 
         .input-container input {
             width: 100%;
-            padding: 10px;
+            padding: 12px;
             border-radius: 6px;
             border: 1px solid rgba(255, 255, 255, 0.2);
             background: rgba(255, 255, 255, 0.08);
             color: #d0d0d0;
             font-size: 1rem;
             outline: none;
+            transition: border-color 0.3s ease, background 0.3s ease;
         }
 
         .input-container input:focus {
             border-color: rgba(255, 255, 255, 0.4);
-        }
-
-        /* BUTTON */
-        button {
-            width: 100%;
-            background: #1e40af;
-            color: #ffffff;
-            border: none;
-            padding: 12px;
-            font-size: 1rem;
-            cursor: pointer;
-            border-radius: 8px;
-            font-weight: 600;
-            margin-top: 10px;
-        }
-
-        button:hover {
-            background: #1e3a8a;
-        }
-
-        /* LOGIN OPTION */
-        .login-option {
-            margin-top: 15px;
-            font-size: 0.9rem;
-        }
-
-        .login-option a {
-            color: #94a3b8;
-            text-decoration: none;
-            font-weight: 600;
-        }
-
-        .login-option a:hover {
-            color: #ffffff;
+            background: rgba(255, 255, 255, 0.1);
         }
 
         /* ERROR MESSAGE */
         .error {
             color: red;
             font-size: 0.9rem;
-            margin-bottom: 15px;
+            margin-top: 5px;
         }
+
+        /* BUTTON */
+        button {
+            width: 100%;
+            background: #1e40af;
+            color: white;
+            border: none;
+            padding: 14px;
+            font-size: 1rem;
+            cursor: pointer;
+            border-radius: 8px;
+            font-weight: 600;
+            margin-top: 10px;
+            transition: background 0.3s ease, transform 0.2s ease;
+        }
+
+        button:hover {
+            background: #1e3a8a;
+            transform: scale(1.05);
+        }
+
     </style>
 </head>
 <body>
@@ -116,58 +127,118 @@
     <div class="signup-container">
         <h2>Sign Up</h2>
         
-        <!-- Signup Form with Updated Fields -->
         <form action="signup.php" method="POST" id="signupForm">
             <div class="input-container">
                 <label for="patientID">Patient ID:</label>
                 <input type="text" name="patientID" id="patientID" required>
+                <div class="error" id="patientIDError"></div>
             </div>
 
             <div class="input-container">
                 <label for="fullname">Full Name:</label>
                 <input type="text" name="fullname" id="fullname" required>
+                <div class="error" id="fullnameError"></div>
+            </div>
+
+            <div class="input-container">
+                <label for="email">Email:</label>
+                <input type="email" name="email" id="email" required>
+                <div class="error" id="emailError"></div>
             </div>
 
             <div class="input-container">
                 <label for="username">Username:</label>
                 <input type="text" name="username" id="username" required>
+                <div class="error" id="usernameError"></div>
             </div>
 
             <div class="input-container">
                 <label for="password">Password:</label>
                 <input type="password" name="password" id="password" required>
+                <div class="error" id="passwordError"></div>
             </div>
 
             <div class="input-container">
                 <label for="confirmPassword">Confirm Password:</label>
                 <input type="password" name="confirmPassword" id="confirmPassword" required>
+                <div class="error" id="confirmPasswordError"></div>
             </div>
-
-            <!-- Error Message -->
-            <div class="error" id="errorMsg"></div>
 
             <button type="submit">Sign Up</button>
         </form>
-
-        <!-- Login Option -->
-        <div class="login-option">
-            <p>Already have an account? <a href="LoginPage.html">Login</a></p>
-        </div>
     </div>
 
     <script>
-        // Form validation before submission
-        document.getElementById('signupForm').addEventListener('submit', function(e) {
-            const password = document.getElementById('password').value;
-            const confirmPassword = document.getElementById('confirmPassword').value;
-
-            // Check if passwords match
-            if (password !== confirmPassword) {
-                e.preventDefault();  // Prevent form submission
-                document.getElementById('errorMsg').textContent = "Passwords do not match!";
-                return;
-            }
+        document.getElementById('signupForm').addEventListener('input', function() {
+            validateForm();
         });
+
+        function validateForm() {
+            let isValid = true;
+
+            // Patient ID validation
+            const patientID = document.getElementById('patientID').value.trim();
+            const patientIDError = document.getElementById('patientIDError');
+            if (!/^\d+$/.test(patientID)) {
+                patientIDError.textContent = "Patient ID must be a number.";
+                isValid = false;
+            } else {
+                patientIDError.textContent = "";
+            }
+
+            // Full Name validation
+            const fullname = document.getElementById('fullname').value.trim();
+            const fullnameError = document.getElementById('fullnameError');
+            if (fullname.length < 3) {
+                fullnameError.textContent = "Full Name must be at least 3 characters.";
+                isValid = false;
+            } else {
+                fullnameError.textContent = "";
+            }
+
+            // Email validation
+            const email = document.getElementById('email').value.trim();
+            const emailError = document.getElementById('emailError');
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailPattern.test(email)) {
+                emailError.textContent = "Invalid email format.";
+                isValid = false;
+            } else {
+                emailError.textContent = "";
+            }
+
+            // Username validation
+            const username = document.getElementById('username').value.trim();
+            const usernameError = document.getElementById('usernameError');
+            if (username.length < 4) {
+                usernameError.textContent = "Username must be at least 4 characters.";
+                isValid = false;
+            } else {
+                usernameError.textContent = "";
+            }
+
+            // Password validation
+            const password = document.getElementById('password').value;
+            const passwordError = document.getElementById('passwordError');
+            if (password.length < 6 || !/\d/.test(password)) {
+                passwordError.textContent = "Password must be at least 6 characters with numbers.";
+                isValid = false;
+            } else {
+                passwordError.textContent = "";
+            }
+
+            // Confirm Password validation
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const confirmPasswordError = document.getElementById('confirmPasswordError');
+            if (confirmPassword !== password) {
+                confirmPasswordError.textContent = "Passwords do not match.";
+                isValid = false;
+            } else {
+                confirmPasswordError.textContent = "";
+            }
+
+            return isValid;
+        }
     </script>
 
 </body>

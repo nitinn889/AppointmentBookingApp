@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fetch Patient Details - Doctorly</title>
+    <style>
+        /* Import Google Fonts */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background: #0a0d14;
+            color: #d0d0d0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        /* HOME CONTAINER */
+        .home-container {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 40px;
+            border-radius: 12px;
+            text-align: center;
+            width: 400px;
+            box-shadow: 0px 6px 20px rgba(255, 255, 255, 0.05);
+        }
+
+        .home-container h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #b8c2cc;
+            margin-bottom: 20px;
+        }
+
+        /* FORM STYLING */
+        form {
+            margin-top: 20px;
+        }
+
+        input[type="number"] {
+            width: calc(100% - 24px);
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            border: none;
+            background-color: #1e293b;
+            color: #ffffff;
+        }
+
+        /* BUTTON STYLING */
+        .btn {
+            width: calc(100% - 24px);
+            background-color: #1e40af;
+            color: #ffffff;
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 1rem;
+            cursor: pointer;
+            border: none;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .btn:hover {
+            background-color: #1e3a8a;
+        }
+
+        /* EXIT BUTTON */
+        .btn-exit {
+            background-color: #dc2626;
+        }
+
+        .btn-exit:hover {
+            background-color: #b91c1c;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HOME CONTAINER -->
+    <div class="home-container">
+        <h2>Fetch Patient Details</h2>
+        
+        <!-- Form to fetch patient details -->
+        <form method="POST" action="FetchPatient.php">
+            <label for="patientID">Enter Patient ID:</label><br>
+            <input type="number" id="patientID" name="patientID" required min="1"><br>
+            
+            <button class="btn" type="submit">Search</button>
+        </form>
+
+        <!-- Exit Button -->
+        <button class="btn btn-exit" onclick="navigateTo('HomePage.html')">🔙 Exit</button>
+    </div>
+
+    <!-- JavaScript for Navigation -->
+    <script>
+        function navigateTo(page) {
+            window.location.href = page;
+        }
+    </script>
+
+</body>
+</html>

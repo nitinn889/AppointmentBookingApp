@@ -19,36 +19,38 @@ if ($conn->connect_error) {
 }
 
 // Get form data
-$patientid = $_POST['patientID'];  // Corrected missing semicolon
+$patientid = $_POST['patientID'];
 $fullname = $_POST['fullname'];
+$email = $_POST['email'];
 $username = $_POST['username'];
-$password = $_POST['password'];
+$password = $_POST['password'];  // ❌ Plain text password (Not recommended)
 
-// Check if any field is empty
-//if (empty($patientid) || empty($fullname) || empty($username) || empty($password)) {
-   // echo "<script>alert('All fields are required!'); window.location.href='signup.html';</script>";
-    //exit();
-//}
-
-// Check if username already exists
-$sql_check = "SELECT * FROM PatientDetails WHERE Username='$username'";
-$result_check = $conn->query($sql_check);
+// Check if username or email already exists
+$sql_check = "SELECT * FROM Patient WHERE Username = ? OR EmailID = ?";
+$stmt_check = $conn->prepare($sql_check);
+$stmt_check->bind_param("ss", $username, $email);
+$stmt_check->execute();
+$result_check = $stmt_check->get_result();
 
 if ($result_check->num_rows > 0) {
-    echo "<script>alert('Username already exists. Please choose a different one.'); window.location.href='signup.html';</script>";
+    echo "<script>alert('Username or Email already exists. Please choose a different one.'); window.location.href='signup.html';</script>";
     exit();
 }
 
-// Insert data into the database
-$sql = "INSERT INTO PatientDetails (PatientID, FullName, Username, Password) VALUES ('$patientid', '$fullname', '$username', '$password')";
+// Insert data into the database using prepared statement (storing plain password)
+$sql = "INSERT INTO Patient (PatientID, FullName, EmailID, Username, Password) VALUES (?, ?, ?, ?, ?)";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("issss", $patientid, $fullname, $email, $username, $password);
 
-// Check if the query was successful
-if ($conn->query($sql) === TRUE) {
+if ($stmt->execute()) {
     echo "<script>alert('Signup successful! Redirecting to login page.'); window.location.href='LoginPage.html';</script>";
 } else {
-    echo "Error: " . $sql . "<br>" . $conn->error;
+    echo "Error: " . $stmt->error;
 }
 
 // Close connection
+$stmt->close();
+$stmt_check->close();
 $conn->close();
+
 ?>

@@ -1,9 +1,10 @@
 <?php
-
+// Enable error reporting for debugging
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
+// Database connection credentials
 $host = "localhost";
 $username = "root";
 $password = "";
@@ -17,69 +18,140 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-// Ensure DoctorID is an integer
-$doctorID = intval($_POST['doctorID']);
-
-// Fetch DoctorName securely using prepared statements
-$sql = "SELECT DoctorName FROM Doctor WHERE DoctorID = ?";
-$stmt = $conn->prepare($sql);
-$stmt->bind_param("s", $doctorID);  // If DoctorID is still VARCHAR, use 's' (string)
-$stmt->execute();
-$result = $stmt->get_result();
-
-if ($result->num_rows > 0) {
-    $row = $result->fetch_assoc();
-    $doctorName = $row['DoctorName'];
-} else {
-    die("Error: Doctor not found.");
-}
-
-// Generate unique random time between 9 AM and 5 PM in HHMM format as string
-$maxAttempts = 100; // Prevent infinite loop
-$attempt = 0;
-
-do {
-    $hour = rand(9, 16); // 9 AM to 4 PM (last valid start hour for appointments)
-    $minutes = rand(0, 59);
-    $appointmentTime = sprintf("%02d%02d", $hour, $minutes); // Format as HHMM (string)
-
-    // Check if time already exists
-    $checkTimeSql = "SELECT * FROM Appointment WHERE Time = ?";
-    $timeStmt = $conn->prepare($checkTimeSql);
-    $timeStmt->bind_param("s", $appointmentTime);
-    $timeStmt->execute();
-    $checkResult = $timeStmt->get_result();
-
-    $attempt++;
-    if ($attempt > $maxAttempts) {
-        die("Error: Unable to find a unique appointment time.");
+// Ensure doctorID and appointmentTime are passed correctly
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (!isset($_POST['doctorID']) || !isset($_POST['appointmentTime'])) {
+        die("Error: Missing doctorID or appointment time.");
     }
-} while ($checkResult->num_rows > 0);
 
-// Close the time check statement
-$timeStmt->close();
+    // Get doctorID and appointment time from the POST request
+    $doctorID = $conn->real_escape_string($_POST['doctorID']);
+    $appointmentTime = $conn->real_escape_string($_POST['appointmentTime']);
 
+    // Fetch the latest PatientID (assuming the latest patient is booking the appointment)
+    $sql = "SELECT PatientID, Name, Sex, Age FROM appointment ORDER BY PatientID DESC LIMIT 1";
+    $result = $conn->query($sql);
 
-// Update DoctorID and Time in the latest Appointment record
-$sql = "UPDATE Appointment 
-        SET DoctordID = ?, Time = ?
-        WHERE PatientID = (SELECT PatientID FROM Appointment ORDER BY PatientID DESC LIMIT 1)";
+    if ($result->num_rows > 0) {
+        $patientData = $result->fetch_assoc();
+        $patientID = $patientData['PatientID'];
+        $patientName = $patientData['Name'];
+        $patientSex = $patientData['Sex'];
+        $patientAge = $patientData['Age'];
+    } else {
+        die("Error: No patient data found.");
+    }
 
+    // Fetch Doctor Name and Department using DoctorID
+    $sql = "SELECT DoctorName, Department FROM Doctor WHERE DoctorID = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("s", $doctorID);
+    $stmt->execute();
+    $result = $stmt->get_result();
 
-$updateStmt = $conn->prepare($sql);
-$updateStmt->bind_param("is", $doctorID, $appointmentTime);
+    if ($result->num_rows > 0) {
+        $doctorData = $result->fetch_assoc();
+        $doctorName = $doctorData['DoctorName'];
+        $department = $doctorData['Department'];
+    } else {
+        die("Error: Doctor not found.");
+    }
 
-if ($updateStmt->execute()) {
-    // Redirect to Confirm.html with a success message
-    echo "
-    <script>
-        alert('Your appointment has been confirmed!');
-        window.location.href = 'ConfirmPage.html?doctorID=$doctorID&doctorName=" . urlencode($doctorName) . "&time=$appointmentTime';
-    </script>";
-    exit();
+   
+
+    // Update Appointment table with DoctorID and Time for the existing PatientID
+    $updateSql = "UPDATE Appointment SET DoctordID = ?, Time = ? WHERE PatientID = ?";
+    $updateStmt = $conn->prepare($updateSql);
+    $updateStmt->bind_param("sss", $doctorID, $appointmentTime, $patientID);
+
+    if (!$updateStmt->execute()) {
+        die("Error updating appointment: " . $conn->error);
+    }
+
+    // Close connection
+    $conn->close();
 } else {
-    echo "Error updating record: " . $conn->error;
+    die("Error: Invalid request method.");
 }
-
-$conn->close();
 ?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Appointment Confirmation</title>
+    <style>
+        body {
+            background-color: #0f0f0f;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            width: 40%;
+            margin: 100px auto;
+            background-color: #1e1e1e;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            color: #d0d0d0;
+        }
+        h2 {
+            text-align: center;
+            color: #ffffff;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #444;
+        }
+        th {
+            background-color: #1e40af;
+            color: white;
+        }
+        tr:hover {
+            background-color: #333;
+        }
+        .next-button {
+          margin-top: 20px;
+          text-align:center;
+          display:block;
+      }
+      .next-button a {
+          display:inline-block;
+          background-color:#28a745;
+          color:white;
+          padding:12px;
+          border-radius:6px;
+          text-decoration:none;
+      }
+      .next-button a:hover {
+          background-color:#218838;
+      }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>Appointment Confirmation</h2>
+    <table>
+        <tr><th>Detail</th><th>Information</th></tr>
+        <tr><td>Patient ID</td><td><?php echo isset($patientID) ? htmlspecialchars($patientID) : "N/A"; ?></td></tr>
+<tr><td>Patient Name</td><td><?php echo isset($patientName) ? htmlspecialchars($patientName) : "N/A"; ?></td></tr>
+<tr><td>Sex</td><td><?php echo isset($patientSex) ? htmlspecialchars($patientSex) : "N/A"; ?></td></tr>
+<tr><td>Age</td><td><?php echo isset($patientAge) ? htmlspecialchars($patientAge) : "N/A"; ?></td></tr>
+<tr><td>Doctor Name</td><td><?php echo isset($doctorName) ? htmlspecialchars($doctorName) : "N/A"; ?></td></tr>
+<tr><td>Department</td><td><?php echo isset($department) ? htmlspecialchars($department) : "N/A"; ?></td></tr>
+<tr><td>Appointment Time</td><td><?php echo isset($appointmentTime) ? htmlspecialchars($appointmentTime) : "N/A"; ?></td></tr>
+
+    </table>
+
+    <div class="next-button">
+       <a href="MedicineHistory.html">Next</a> <!-- Link to the next step -->
+    </div>
+</div>
+</body>
+</html>

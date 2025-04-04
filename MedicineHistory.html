@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Prescription</title>
+    <style>
+        body {
+            background-color: #0f0f0f;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            width: 40%;
+            margin: 50px auto;
+            background-color: #1e1e1e;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            color: #d0d0d0;
+        }
+        h2 {
+            text-align: center;
+            color: #ffffff;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        select, input, textarea, button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 6px;
+            border: 1px solid #444;
+            background: #333;
+            color: #fff;
+        }
+        button {
+            width: 100%;
+            background-color: #1e40af;
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #1a3d9a;
+        }
+        .logout-btn {
+            background-color: #af1e1e;
+            margin-top: 10px;
+        }
+        .logout-btn:hover {
+            background-color: #9a1a1a;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Add Prescription</h2>
+    <form action="MedicineHistory.php" method="post">
+        <!-- PatientID transferred from previous page -->
+        <input type="hidden" name="patientID" value="<?php echo htmlspecialchars($_GET['patientID']); ?>">
+
+        <!-- Past Medical History -->
+        <label for="pastHistory">Past Medical History:</label>
+        <textarea name="pastHistory" id="pastHistory" rows="4" placeholder="Enter any past illnesses, allergies, or surgeries..." required></textarea>
+
+        <label for="medicine">Medicine:</label>
+        <textarea name="medicine" id="medicine" rows="3" required></textarea>
+
+        <label for="dosage">Dosage:</label>
+        <input type="number" name="dosage" id="dosage" min="1" required>
+
+        <h3>Select Time:</h3>
+        <label for="morning">Morning:</label>
+        <select name="morning" id="morning" required>
+            <option value="1">Yes</option>
+            <option value="0">No</option>
+        </select>
+
+        <label for="afternoon">Afternoon:</label>
+        <select name="afternoon" id="afternoon" required>
+            <option value="1">Yes</option>
+            <option value="0">No</option>
+        </select>
+
+        <label for="night">Night:</label>
+        <select name="night" id="night" required>
+            <option value="1">Yes</option>
+            <option value="0">No</option>
+        </select>
+
+        <button type="submit">Add Prescription</button>
+    </form>
+
+    <!-- Logout Button -->
+    <button class="logout-btn" onclick="window.location.href='HomePage.html'">Logout</button>
+</div>
+
+</body>
+</html>

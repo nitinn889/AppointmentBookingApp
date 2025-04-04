@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Dashboard</title>
+    <style>
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: #0f172a;
+            color: #e5e7eb;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            flex-direction: column;
+        }
+
+        /* Header with Logout Button */
+        .header {
+            width: 100%;
+            background-color: #ff6b6b; /* Light Red Hue */
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 50px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .header h1 {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .logout-btn {
+            background-color: #dc2626;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .logout-btn:hover {
+            background-color: #b91c1c;
+        }
+
+        /* Main Container */
+        .container {
+            background-color: #1f2937;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            width: 600px;
+            text-align: center;
+            margin-top: 100px; /* Adjusted for header */
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            color: #f9fafb;
+        }
+
+        input {
+            padding: 12px;
+            width: 80%;
+            margin-bottom: 15px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            text-align: center;
+            background: #374151;
+            color: white;
+            outline: none;
+        }
+
+        button {
+            padding: 12px 15px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            background-color: #3b82f6;
+            color: white;
+            margin: 5px;
+            font-weight: bold;
+            transition: all 0.3s ease-in-out;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+
+        /* Table Styles */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background-color: #111827;
+            border-radius: 10px;
+            overflow: hidden;
+            display: none;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #4b5563;
+            text-align: left;
+        }
+
+        th {
+            background-color: #374151;
+            color: #ffffff;
+        }
+
+        tbody tr:hover {
+            background-color: #374151;
+        }
+
+        .error-message {
+            margin-top: 10px;
+            color: #ef4444;
+            font-weight: bold;
+        }
+
+        #nextButton {
+            display: none;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 650px) {
+            .header {
+                flex-direction: column;
+                text-align: center;
+                gap: 10px;
+            }
+
+            .container {
+                width: 90%;
+                padding: 20px;
+            }
+
+            input {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <div class="header">
+        <h1>Welcome, Doctor!</h1>
+        <button class="logout-btn" onclick="logout()">Logout</button>
+    </div>
+
+    <div class="container">
+        <h2>Doctor Dashboard</h2>
+        <input type="text" id="doctorID" placeholder="Enter Doctor ID">
+        <button onclick="fetchPatients()">Get Patients</button>
+
+        <p id="errorMessage" class="error-message" style="display:none;">
+            No patients found or invalid Doctor ID.
+        </p>
+
+        <table id="patientTable">
+            <thead>
+                <tr>
+                    <th>Patient ID</th>
+                    <th>Name</th>
+                    <th>Sex</th>
+                    <th>Age</th>
+                    <th>Address</th>
+                    <th>Time</th>
+                </tr>
+            </thead>
+            <tbody id="patientBody">
+                <!-- Data will be inserted here -->
+            </tbody>
+        </table>
+
+        <button id="nextButton" onclick="goToNextPage()">Next</button>
+    </div>
+
+    <script>
+        function fetchPatients() {
+            const doctorID = document.getElementById("doctorID").value;
+            const table = document.getElementById("patientTable");
+            const patientBody = document.getElementById("patientBody");
+            const errorMessage = document.getElementById("errorMessage");
+            const nextButton = document.getElementById("nextButton");
+
+            if (!doctorID.trim()) {
+                alert("Please enter a valid Doctor ID.");
+                return;
+            }
+
+            fetch("fetch_patients.php?doctorID=" + doctorID)
+            .then(response => response.json())
+            .then(data => {
+                if (data.success && data.patients.length > 0) {
+                    table.style.display = "table";
+                    errorMessage.style.display = "none";
+                    nextButton.style.display = "inline-block"; // Show the Next button
+                    patientBody.innerHTML = ""; // Clear old data
+
+                    data.patients.forEach(patient => {
+                        const row = document.createElement("tr");
+                        row.innerHTML = `
+                            <td>${patient.PatientID}</td>
+                            <td>${patient.Name}</td>
+                            <td>${patient.Sex}</td>
+                            <td>${patient.Age}</td>
+                            <td>${patient.Address}</td>
+                            <td>${patient.Time}</td>
+                        `;
+                        patientBody.appendChild(row);
+                    });
+
+                    // Store DoctorID in sessionStorage for next page
+                    sessionStorage.setItem("doctorID", doctorID);
+
+                } else {
+                    table.style.display = "none";
+                    errorMessage.style.display = "block";
+                    nextButton.style.display = "none";
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                alert("Error fetching data. Please try again.");
+            });
+        }
+
+        function goToNextPage() {
+            window.location.href = "Doctor_DetailsFetch.html";
+        }
+
+        function logout() {
+            // Redirect to MasterLogin.html
+            window.location.href = "MasterLogin.html";
+        }
+    </script>
+
+</body>
+</html>

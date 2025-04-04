@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Healthify - Book Your Appointments</title>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background: #0a0d14;
+            color: #d0d0d0;
+        }
+
+        /* Navbar */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 50px;
+            background: #0f172a;
+        }
+
+        .navbar .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #f9fafb;
+        }
+
+        .navbar .menu {
+            display: flex;
+            gap: 20px;
+        }
+
+        .navbar a {
+            text-decoration: none;
+            color: #e5e7eb;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .navbar a:hover {
+            color: #3b82f6;
+        }
+
+        .navbar .buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 10px 15px;
+            background: #1e40af;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .btn:hover {
+            background: #1a3d9a;
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 80px 20px;
+            background: #111827;
+            border-radius: 10px;
+            margin: 30px auto;
+            width: 80%;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #f9fafb;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: #9ca3af;
+            margin: 10px 0 20px;
+        }
+
+        .hero .btn {
+            padding: 12px 20px;
+            font-size: 1rem;
+            font-weight: 600;
+            background: #3b82f6;
+            border-radius: 8px;
+        }
+
+        /* Services Section */
+        .services {
+            text-align: center;
+            padding: 40px;
+        }
+
+        .services h2 {
+            color: #f9fafb;
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+        }
+
+        .service-cards {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .service-card {
+            background: #1e293b;
+            padding: 20px;
+            border-radius: 10px;
+            width: 250px;
+            text-align: center;
+            color: white;
+            transition: transform 0.3s;
+        }
+
+        .service-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .service-card img {
+            width: 50px;
+            margin-bottom: 10px;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 20px;
+            background: #0f172a;
+            color: #9ca3af;
+            margin-top: 30px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="logo">HEALTHIFY.</div>
+        <div class="menu">
+            <a href="#">Home</a>
+           
+            <a href="help.html">Contact</a>
+        </div>
+        <div class="buttons">
+            <a href="Signup.html" class="btn">Sign Up</a>
+            <a href="doctorLogin.html" class="btn">Login</a>  <!-- Changed to doctorLogin.html -->
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1>YOUR HEALTH, OUR PRIORITY</h1>
+        <p>Book your doctor appointments easily with Healthify.</p>
+        <a href="LoginPage.html" class="btn">Book Now</a>  <!-- Leads to Patient Login -->
+    </section>
+
+    <!-- Services Section -->
+    <section class="services">
+        <h2>Our Services</h2>
+        <div class="service-cards">
+            <div class="service-card">
+                <img src="doctor_icon.png" alt="Doctor Consultation">
+                <h3>Doctor Consultation</h3>
+                <p>Find expert doctors for consultation.</p>
+            </div>
+            <div class="service-card">
+                <img src="appointment_icon.png" alt="Online Appointments">
+                <h3>Online Appointments</h3>
+                <p>Schedule appointments at your convenience.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        &copy; 2025 Healthify. All Rights Reserved.
+    </footer>
+
+</body>
+</html>

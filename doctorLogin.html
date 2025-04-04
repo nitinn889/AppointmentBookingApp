@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Healthify</title>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background: #0a0d14;
+            color: #d0d0d0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Navbar */
+        .navbar {
+            width: 100%;
+            background: #111827;
+            padding: 15px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .navbar .logo {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .navbar .menu {
+            display: flex;
+            gap: 20px;
+        }
+
+        .navbar a {
+            color: #cbd5e1;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        .navbar a:hover {
+            color: white;
+        }
+
+        /* Login Container */
+        .login-container {
+            background: #111827;
+            padding: 40px;
+            border-radius: 12px;
+            text-align: center;
+            width: 400px;
+            margin-top: 100px;
+            box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #f8fafc;
+            margin-bottom: 20px;
+        }
+
+        .error-message {
+            color: #ef4444;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+
+        .input-container {
+            text-align: left;
+            margin-bottom: 15px;
+        }
+
+        label {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #cbd5e1;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            background: #1e293b;
+            border: 1px solid #374151;
+            color: white;
+            border-radius: 8px;
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        input:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 5px rgba(59, 130, 246, 0.5);
+        }
+
+        /* Remember Me */
+        .options {
+            display: flex;
+            align-items: center;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+
+        .remember-me input {
+            margin-right: 5px;
+        }
+
+        /* Login Button */
+        button {
+            width: 100%;
+            background: #3b82f6;
+            color: white;
+            padding: 12px;
+            font-size: 1rem;
+            cursor: pointer;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease-in-out;
+        }
+
+        button:hover {
+            background: #1e40af;
+        }
+
+        /* Back Button */
+        .back-button {
+            position: fixed;
+            left: 20px;
+            top: 80px;
+            background: #ef4444;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .back-button:hover {
+            background: #b91c1c;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 500px) {
+            .login-container {
+                width: 90%;
+                padding: 30px;
+            }
+            .navbar {
+                flex-direction: column;
+                gap: 10px;
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="logo">HEALTHIFY.</div>
+        <div class="menu">
+            <a href="MasterLogin.html">Home</a>
+            <a href="help.html">Contact</a>
+        </div>
+    </nav>
+
+    <!-- Back Button -->
+    <a href="MasterLogin.html" class="back-button">⬅ Back</a>
+
+    <!-- Login Form -->
+    <div class="login-container">
+        <h2>Login</h2>
+        
+        <!-- Error Message Display -->
+        <p id="errorMessage" class="error-message"></p>
+
+        <!-- Login Form -->
+        <form id="loginForm">
+            <div class="input-container">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+
+            <div class="input-container">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+
+            <div class="options">
+                <div class="remember-me">
+                    <input type="checkbox" id="rememberMe" name="rememberMe">
+                    <label for="rememberMe">Remember me</label>
+                </div>
+            </div>
+
+            <button type="submit">Login</button>
+        </form>
+    </div>
+
+    <!-- JavaScript for AJAX Login -->
+    <script>
+        document.getElementById("loginForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            
+            // Clear previous errors
+            document.getElementById("errorMessage").innerText = "";
+            
+            const formData = new FormData(this);
+
+            fetch("backend/login.php", {
+                method: "POST",
+                body: formData
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    window.location.href = "DoctorDashboard.html";
+                } else {
+                    document.getElementById("errorMessage").innerText = data.message;
+                }
+            })
+            .catch(error => {
+                console.error("Fetch error:", error);
+                document.getElementById("errorMessage").innerText = "Login failed. Please try again.";
+            });
+        });
+    </script>
+
+</body>
+</html>
